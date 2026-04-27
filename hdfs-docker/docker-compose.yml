@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  namenode:
+    build: .  # 这里的点表示在当前目录（Git 根目录）寻找 Dockerfile
+    container_name: namenode
+    hostname: namenode
+    ports:
+      - "9870:9870"  # Web UI 端口
+      - "9000:9000"  # RPC 端口
+    volumes:
+      - ./data/namenode:/opt/hadoop/data/namenode
+      # 挂载配置文件，覆盖镜像内的默认配置
+      - ./config/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
+      - ./config/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
+    command: >
+      bash -c "
+      hdfs namenode -format -force &&
+      hdfs --daemon start namenode &&
+      tail -f /opt/hadoop/logs/hadoop-root-namenode-namenode.log"
+
+  datanode1:
+    build: .
+    container_name: datanode1
+    hostname: datanode1
+    depends_on:
+      - namenode
+    volumes:
+      - ./data/datanode1:/opt/hadoop/data/datanode
+      - ./config/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
+      - ./config/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
+    command: >
+      bash -c "
+      sleep 10 &&
+      hdfs --daemon start datanode &&
+      tail -f /opt/hadoop/logs/hadoop-root-datanode-datanode1.log"
+
+  datanode2:
+    build: .
+    container_name: datanode2
+    hostname: datanode2
+    depends_on:
+      - namenode
+    volumes:
+      - ./data/datanode2:/opt/hadoop/data/datanode
+      - ./config/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
+      - ./config/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
+    command: >
+      bash -c "
+      sleep 10 &&
+      hdfs --daemon start datanode &&
+      tail -f /opt/hadoop/logs/hadoop-root-datanode-datanode2.log"

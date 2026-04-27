@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+    <!-- 指定 HDFS 的默认访问地址 -->
+    <property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://namenode:9000</value>
+    </property>
+    <!-- 指定 Hadoop 临时目录 -->
+    <property>
+        <name>hadoop.tmp.dir</name>
+        <value>/opt/hadoop/data/tmp</value>
+    </property>
+</configuration>
