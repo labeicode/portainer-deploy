@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   namenode:
-    build: ./hdfs-docker  # 这里的点表示在当前目录（Git 根目录）寻找 Dockerfile
+    build: .  # 这里的点表示在当前目录（Git 根目录）寻找 Dockerfile
     container_name: namenode
     hostname: namenode
     ports:
