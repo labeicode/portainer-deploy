@@ -25,22 +25,7 @@ services:
     volumes:
       - ./data/storage:/var/fdfs
       - /etc/localtime:/etc/localtime:ro
-    command: storage
+    command: sh -c "/usr/local/bin/start-storage.sh"
     depends_on:
       - tracker
-    restart: unless-stopped
-
-  nginx:
-    build: .
-    container_name: fastdfs-nginx
-    hostname: nginx
-    network_mode: host
-    environment:
-      - TZ=Asia/Shanghai
-    volumes:
-      - ./data/storage:/var/fdfs
-      - /etc/localtime:/etc/localtime:ro
-    command: nginx
-    depends_on:
-      - storage
     restart: unless-stopped

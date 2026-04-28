@@ -21,8 +21,7 @@
 graph TB
     subgraph "FastDFS 集群"
         A[Tracker<br/>:22122]
-        B[Storage<br/>:23000]
-        C[Nginx<br/>:8888]
+        B[Storage + Nginx<br/>:23000 Storage<br/>:8888 HTTP]
     end
     
     subgraph "客户端"
@@ -35,13 +34,15 @@ graph TB
     D -->|3. 上传文件| B
     B -->|4. 返回文件ID| D
     
-    E -->|HTTP访问| C
-    C -->|读取文件| B
+    E -->|HTTP访问| B
     
     style A fill:#4dabf7,stroke:#1971c2,color:#fff
     style B fill:#51cf66,stroke:#2f9e44,color:#fff
-    style C fill:#ff6b6b,stroke:#c92a2a,color:#fff
 ```
+
+**说明**：
+- Tracker 容器：负责调度和负载均衡
+- Storage 容器：同时运行 Storage 服务和 Nginx，提供文件存储和 HTTP 访问
 
 ## 部署步骤
 
@@ -117,7 +118,8 @@ fastdfs/
 ├── DEPLOY.md            # 快速部署指南
 ├── .env.example         # 环境变量配置示例
 ├── config/              # 配置文件目录
-│   └── nginx.conf      # Nginx 配置（构建时复制到镜像）
+│   ├── nginx.conf      # Nginx 配置（构建时复制到镜像）
+│   └── start-storage.sh # Storage + Nginx 启动脚本
 └── data/                # 数据目录（自动创建）
     ├── tracker/         # Tracker 数据
     └── storage/         # Storage 数据
@@ -126,8 +128,9 @@ fastdfs/
 ```
 
 **注意**：
-- Nginx 配置文件在构建镜像时复制到镜像中
-- 如需修改 Nginx 配置，需要重新构建镜像
+- Storage 容器同时运行 Storage 服务和 Nginx
+- Nginx 配置文件和启动脚本在构建时复制到镜像中
+- 如需修改配置，需要重新构建镜像
 
 ## 访问方式
 

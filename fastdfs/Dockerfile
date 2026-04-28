@@ -17,6 +17,10 @@ RUN touch /var/fdfs/storage/logs/storaged.log && \
 # 复制自定义 Nginx 配置文件到镜像中
 COPY config/nginx.conf /usr/local/nginx/conf/nginx.conf
 
+# 复制启动脚本
+COPY config/start-storage.sh /usr/local/bin/start-storage.sh
+RUN chmod +x /usr/local/bin/start-storage.sh
+
 # 暴露端口
 # 22122: Tracker 端口
 # 23000: Storage 端口
