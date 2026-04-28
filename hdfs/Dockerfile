@@ -21,12 +21,11 @@ RUN wget https://downloads.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.ta
     rm /tmp/hadoop.tar.gz && \
     mv /opt/hadoop-3.3.6 /opt/hadoop
 
-# 4. 创建数据目录
-RUN mkdir -p /opt/hadoop/data
+# 4. 创建数据目录和配置目录
+RUN mkdir -p /opt/hadoop/data && \
+    mkdir -p $HADOOP_CONF_DIR
 
-# 5. 复制配置文件到镜像中 (作为默认配置)
-COPY config/core-site.xml $HADOOP_CONF_DIR/core-site.xml
-COPY config/hdfs-site.xml $HADOOP_CONF_DIR/hdfs-site.xml
+# 注意：配置文件通过 docker-compose volumes 挂载，不在镜像中硬编码
 
 # 6. 配置 SSH 免密登录 (本地回环)
 RUN ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa && \
