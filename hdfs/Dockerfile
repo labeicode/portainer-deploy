@@ -24,12 +24,9 @@ RUN wget https://downloads.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.ta
 # 4. 创建数据目录
 RUN mkdir -p /opt/hadoop/data
 
-# 5. 删除 Hadoop 自带的默认配置文件，为 docker-compose volumes 挂载腾出空间
-# 这样可以避免 "mounting file onto directory" 错误
-RUN rm -f $HADOOP_CONF_DIR/core-site.xml && \
-    rm -f $HADOOP_CONF_DIR/hdfs-site.xml
-
-# 注意：配置文件通过 docker-compose volumes 挂载，不在镜像中硬编码
+# 5. 复制自定义配置文件到镜像中
+COPY config/core-site.xml $HADOOP_CONF_DIR/core-site.xml
+COPY config/hdfs-site.xml $HADOOP_CONF_DIR/hdfs-site.xml
 
 # 6. 配置 SSH 免密登录 (本地回环)
 RUN ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa && \
