@@ -7,7 +7,7 @@ services:
     hostname: namenode
     ports:
       - "9870:9870"  # Web UI 端口
-      - "9000:9000"  # RPC 端口
+      - "9001:9000"  # RPC 端口
     volumes:
       - ./data/namenode:/opt/hadoop/data/namenode
       # 挂载配置文件，覆盖镜像内的默认配置
