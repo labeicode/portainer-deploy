@@ -21,9 +21,13 @@ RUN wget https://downloads.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.ta
     rm /tmp/hadoop.tar.gz && \
     mv /opt/hadoop-3.3.6 /opt/hadoop
 
-# 4. 创建数据目录和配置目录
-RUN mkdir -p /opt/hadoop/data && \
-    mkdir -p $HADOOP_CONF_DIR
+# 4. 创建数据目录
+RUN mkdir -p /opt/hadoop/data
+
+# 5. 删除 Hadoop 自带的默认配置文件，为 docker-compose volumes 挂载腾出空间
+# 这样可以避免 "mounting file onto directory" 错误
+RUN rm -f $HADOOP_CONF_DIR/core-site.xml && \
+    rm -f $HADOOP_CONF_DIR/hdfs-site.xml
 
 # 注意：配置文件通过 docker-compose volumes 挂载，不在镜像中硬编码
 
