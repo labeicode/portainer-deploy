@@ -25,16 +25,14 @@ services:
     depends_on:
       - namenode
     ports:
-      - "9866:9866"  # ⭐ 关键：映射 DataNode 数据传输端口
-      - "9864:9864"  # DataNode HTTP 端口
-      - "9867:9867"  # DataNode IPC 端口（修正：保持一致）
+      - "9866:9866"  # ⭐ DataNode1 数据传输端口
+      - "9864:9864"  # DataNode1 HTTP 端口
+      - "9867:9867"  # DataNode1 IPC 端口
     volumes:
       - ./data/datanode1:/opt/hadoop/data/datanode
     networks:
       hadoop-net:
         ipv4_address: 172.25.0.3
-    environment:
-      - HDFS_DATANODE_OPTS=-Ddfs.datanode.hostname=10.215.6.70
     command: >
       bash -c "sleep 10 &&
       hdfs --daemon start datanode &&
@@ -56,7 +54,7 @@ services:
       hadoop-net:
         ipv4_address: 172.25.0.4
     environment:
-      - HDFS_DATANODE_OPTS=-Ddfs.datanode.hostname=10.215.6.70 -Ddfs.datanode.address=0.0.0.0:9868 -Ddfs.datanode.http.address=0.0.0.0:9865 -Ddfs.datanode.ipc.address=0.0.0.0:9869
+      - HDFS_DATANODE_OPTS=-Ddfs.datanode.address=0.0.0.0:9868 -Ddfs.datanode.http.address=0.0.0.0:9865 -Ddfs.datanode.ipc.address=0.0.0.0:9869
     command: >
       bash -c "sleep 10 &&
       hdfs --daemon start datanode &&

@@ -12,10 +12,10 @@
         <value>/opt/hadoop/data/tmp</value>
     </property>
     
-    <!-- ⭐ 客户端使用 IP 地址访问 DataNode -->
+    <!-- ⭐ 客户端使用主机名访问 DataNode -->
     <property>
         <name>dfs.client.use.datanode.hostname</name>
-        <value>false</value>
-        <description>确保客户端通过 IP 而非主机名访问 DataNode</description>
+        <value>true</value>
+        <description>客户端通过主机名访问 DataNode（跨网络访问必须）</description>
     </property>
 </configuration>

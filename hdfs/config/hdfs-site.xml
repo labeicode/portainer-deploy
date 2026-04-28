@@ -22,11 +22,11 @@
         <value>file:///opt/hadoop/data/datanode</value>
     </property>
     
-    <!-- ⭐ 关键配置：让客户端使用 IP 地址而非主机名访问 DataNode -->
+    <!-- ⭐ 关键配置：让客户端使用主机名而非 IP 地址访问 DataNode -->
     <property>
         <name>dfs.client.use.datanode.hostname</name>
-        <value>false</value>
-        <description>客户端使用 DataNode 的 IP 地址而不是主机名</description>
+        <value>true</value>
+        <description>客户端使用 DataNode 的主机名而不是 IP 地址</description>
     </property>
     
     <!-- DataNode 对外服务地址（绑定所有网络接口） -->
@@ -48,12 +48,5 @@
         <name>dfs.datanode.ipc.address</name>
         <value>0.0.0.0:9867</value>
         <description>DataNode IPC 端口</description>
-    </property>
-    
-    <!-- ⭐ 关键配置：DataNode 使用服务器的外部 IP 地址 -->
-    <property>
-        <name>dfs.datanode.hostname</name>
-        <value>10.215.6.70</value>
-        <description>测试服务器 IP 地址</description>
     </property>
 </configuration>
