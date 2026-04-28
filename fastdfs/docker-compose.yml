@@ -25,7 +25,7 @@ services:
     volumes:
       - ./data/storage:/var/fdfs
       - /etc/localtime:/etc/localtime:ro
-    command: sh -c "/usr/local/bin/start-storage.sh"
+    command: storage
     depends_on:
       - tracker
     restart: unless-stopped
