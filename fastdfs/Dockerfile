@@ -14,6 +14,9 @@ RUN mkdir -p /var/fdfs/tracker && \
 RUN touch /var/fdfs/storage/logs/storaged.log && \
     chmod 666 /var/fdfs/storage/logs/storaged.log
 
+# 复制自定义 Nginx 配置文件到镜像中
+COPY config/nginx.conf /usr/local/nginx/conf/nginx.conf
+
 # 暴露端口
 # 22122: Tracker 端口
 # 23000: Storage 端口

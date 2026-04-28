@@ -114,15 +114,20 @@ fastdfs/
 ├── docker-compose.yml    # Docker Compose 配置
 ├── Dockerfile           # 自定义镜像构建文件
 ├── README.md            # 本文档
+├── DEPLOY.md            # 快速部署指南
 ├── .env.example         # 环境变量配置示例
 ├── config/              # 配置文件目录
-│   └── nginx.conf      # Nginx 配置
+│   └── nginx.conf      # Nginx 配置（构建时复制到镜像）
 └── data/                # 数据目录（自动创建）
     ├── tracker/         # Tracker 数据
     └── storage/         # Storage 数据
         ├── data/        # 文件存储
         └── logs/        # 日志文件
 ```
+
+**注意**：
+- Nginx 配置文件在构建镜像时复制到镜像中
+- 如需修改 Nginx 配置，需要重新构建镜像
 
 ## 访问方式
 
@@ -397,7 +402,7 @@ tracker_server=192.168.1.100:22122
 
 ### Nginx 配置
 
-配置文件：`config/nginx.conf`
+配置文件：`config/nginx.conf`（在构建时复制到镜像中）
 
 ```nginx
 server {
@@ -415,6 +420,17 @@ server {
     }
 }
 ```
+
+**修改 Nginx 配置**：
+
+1. 编辑 `config/nginx.conf`
+2. 重新构建镜像：
+   ```bash
+   docker-compose build --no-cache nginx
+   docker-compose up -d nginx
+   ```
+
+**注意**：配置文件在构建时复制到镜像中，不支持热更新。
 
 ## 管理操作
 

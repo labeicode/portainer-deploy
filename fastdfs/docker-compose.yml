@@ -39,7 +39,6 @@ services:
       - TZ=Asia/Shanghai
     volumes:
       - ./data/storage:/var/fdfs
-      - ./config/nginx.conf:/usr/local/nginx/conf/nginx.conf:ro
       - /etc/localtime:/etc/localtime:ro
     command: nginx
     depends_on:
