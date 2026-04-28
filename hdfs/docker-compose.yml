@@ -9,10 +9,10 @@ services:
       - "9870:9870"  # Web UI 端口
       - "9000:9000"  # RPC 端口
     volumes:
-      - ./hdfs/data/namenode:/opt/hadoop/data/namenode
+      - ./data/namenode:/opt/hadoop/data/namenode
       # 挂载配置文件，覆盖镜像内的默认配置
-      - ./hdfs/config/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
-      - ./hdfs/config/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
+      - ./config/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
+      - ./config/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
     command: >
       bash -c "
       hdfs namenode -format -force &&
@@ -26,9 +26,9 @@ services:
     depends_on:
       - namenode
     volumes:
-      - ./hdfs/data/datanode1:/opt/hadoop/data/datanode
-      - ./hdfs/config/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
-      - ./hdfs/config/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
+      - ./data/datanode1:/opt/hadoop/data/datanode
+      - ./config/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
+      - ./config/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
     command: >
       bash -c "
       sleep 10 &&
@@ -42,9 +42,9 @@ services:
     depends_on:
       - namenode
     volumes:
-      - ./hdfs/data/datanode2:/opt/hadoop/data/datanode
-      - ./hdfs/config/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
-      - ./hdfs/config/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
+      - ./data/datanode2:/opt/hadoop/data/datanode
+      - ./config/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
+      - ./config/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
     command: >
       bash -c "
       sleep 10 &&
