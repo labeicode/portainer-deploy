@@ -49,4 +49,11 @@
         <value>0.0.0.0:9867</value>
         <description>DataNode IPC 端口</description>
     </property>
+    
+    <!-- ⭐ 关键配置：DataNode 使用服务器的外部 IP 地址 -->
+    <property>
+        <name>dfs.datanode.hostname</name>
+        <value>10.215.6.70</value>
+        <description>测试服务器 IP 地址</description>
+    </property>
 </configuration>
