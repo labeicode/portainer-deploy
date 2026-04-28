@@ -30,6 +30,9 @@ services:
       - "9869:9867"  # DataNode IPC 端口
     volumes:
       - ./data/datanode1:/opt/hadoop/data/datanode
+    environment:
+      # ⭐ 关键：设置 DataNode 向 NameNode 报告的地址
+      - HDFS_DATANODE_OPTS=-Ddfs.datanode.hostname=10.215.6.70
     networks:
       hadoop-net:
         ipv4_address: 172.25.0.3
@@ -50,6 +53,9 @@ services:
       - "9868:9867"  # DataNode IPC 端口
     volumes:
       - ./data/datanode2:/opt/hadoop/data/datanode
+    environment:
+      # ⭐ 关键：设置 DataNode 向 NameNode 报告的地址
+      - HDFS_DATANODE_OPTS=-Ddfs.datanode.hostname=10.215.6.70
     networks:
       hadoop-net:
         ipv4_address: 172.25.0.4
