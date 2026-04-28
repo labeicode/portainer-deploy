@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  minio:
+    image: minio/minio:RELEASE.2022-12-07T00-56-37Z
+    container_name: minio
+    hostname: minio
+    environment:
+      MINIO_ROOT_USER: minioadmin      # 管理员用户名
+      MINIO_ROOT_PASSWORD: minioadmin  # 管理员密码（至少 8 位）
+      TZ: Asia/Shanghai
+    ports:
+      - "9080:9000"  # API 端口
+      - "9090:9090"  # Console 端口（Web UI）
+    volumes:
+      - ./data:/data
+    command: server /data --console-address ":9090" --address ":9000"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3

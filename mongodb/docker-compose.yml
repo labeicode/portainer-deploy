@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:4.0.28
+    container_name: mongodb
+    hostname: mongodb
+    environment:
+      # 可选：设置 root 用户密码
+      # MONGO_INITDB_ROOT_USERNAME: admin
+      # MONGO_INITDB_ROOT_PASSWORD: admin123
+      TZ: Asia/Shanghai
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data/db
+      - ./config:/data/configdb
+      - ./init:/docker-entrypoint-initdb.d  # 初始化脚本
+    restart: unless-stopped
+    command: mongod --auth  # 启用认证（如果设置了用户密码）

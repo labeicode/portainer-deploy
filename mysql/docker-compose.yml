@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql5_7
+    hostname: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: test_db  # 可选：创建默认数据库
+      TZ: Asia/Shanghai
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data:/var/lib/mysql
+      - ./config/my.cnf:/etc/mysql/conf.d/my.cnf:ro  # 自定义配置
+      - ./init:/docker-entrypoint-initdb.d  # 初始化 SQL 脚本
+    command: 
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --default-time-zone=+08:00
+    restart: unless-stopped

@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  tracker:
+    build: .
+    container_name: fastdfs-tracker
+    hostname: tracker
+    network_mode: host
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./data/tracker:/var/fdfs
+      - /etc/localtime:/etc/localtime:ro
+    command: tracker
+    restart: unless-stopped
+
+  storage:
+    build: .
+    container_name: fastdfs-storage
+    hostname: storage
+    network_mode: host
+    environment:
+      - TZ=Asia/Shanghai
+      - TRACKER_SERVER=${TRACKER_SERVER:-127.0.0.1:22122}
+    volumes:
+      - ./data/storage:/var/fdfs
+      - /etc/localtime:/etc/localtime:ro
+    command: storage
+    depends_on:
+      - tracker
+    restart: unless-stopped
+
+  nginx:
+    build: .
+    container_name: fastdfs-nginx
+    hostname: nginx
+    network_mode: host
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./data/storage:/var/fdfs
+      - ./config/nginx.conf:/usr/local/nginx/conf/nginx.conf:ro
+      - /etc/localtime:/etc/localtime:ro
+    command: nginx
+    depends_on:
+      - storage
+    restart: unless-stopped
