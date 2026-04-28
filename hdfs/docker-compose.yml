@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   namenode:
-    build: .  # 这里的点表示在当前目录（Git 根目录）寻找 Dockerfile
+    build: .
     container_name: namenode
     hostname: namenode
     ports:
@@ -10,9 +10,11 @@ services:
       - "9001:9000"  # RPC 端口
     volumes:
       - ./data/namenode:/opt/hadoop/data/namenode
+    networks:
+      hadoop-net:
+        ipv4_address: 172.25.0.2
     command: >
-      bash -c "
-      hdfs namenode -format -force &&
+      bash -c "hdfs namenode -format -force &&
       hdfs --daemon start namenode &&
       tail -f /opt/hadoop/logs/hadoop-root-namenode-namenode.log"
 
@@ -22,11 +24,16 @@ services:
     hostname: datanode1
     depends_on:
       - namenode
+    ports:
+      - "9866:9866"  # ⭐ 关键：映射 DataNode 数据传输端口
+      - "9864:9864"  # DataNode HTTP 端口
     volumes:
       - ./data/datanode1:/opt/hadoop/data/datanode
+    networks:
+      hadoop-net:
+        ipv4_address: 172.25.0.3
     command: >
-      bash -c "
-      sleep 10 &&
+      bash -c "sleep 10 &&
       hdfs --daemon start datanode &&
       tail -f /opt/hadoop/logs/hadoop-root-datanode-datanode1.log"
 
@@ -36,10 +43,23 @@ services:
     hostname: datanode2
     depends_on:
       - namenode
+    ports:
+      - "9867:9866"  # ⭐ 映射到不同的宿主机端口（避免冲突）
+      - "9865:9864"  # DataNode HTTP 端口
     volumes:
       - ./data/datanode2:/opt/hadoop/data/datanode
+    networks:
+      hadoop-net:
+        ipv4_address: 172.25.0.4
     command: >
-      bash -c "
-      sleep 10 &&
+      bash -c "sleep 10 &&
       hdfs --daemon start datanode &&
       tail -f /opt/hadoop/logs/hadoop-root-datanode-datanode2.log"
+
+# 定义网络
+networks:
+  hadoop-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16
